@@ -308,7 +308,7 @@ WHERE CustomerName LIKE '%market%'
 
 ```sql
 INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
-SET ('The Shire', 'Bilbio Baggins', '1 Hobbit Hole', 'Bag End', '111', 'Middle Earth')
+VALUES ('The Shire', 'Bilbio Baggins', '1 Hobbit Hole', 'Bag End', '111', 'Middle Earth')
 ```
 
 You have made changes to the database. Rows affected: 1
@@ -319,7 +319,7 @@ You have made changes to the database. Rows affected: 1
 
 ```sql
 UPDATE Customers
-VALUES ContactName = 'Bilbo Baggins', PostalCode = '11122'
+SET ContactName = 'Bilbo Baggins', PostalCode = '11122'
 WHERE CustomerID = '11'
 ```
 
@@ -527,3 +527,20 @@ ORDER BY ordercount desc
   - the `id` should be the primary key for the table.
   - account `name` should be unique.
   - account `budget` is required.
+
+INSERT INTO accounts (name, budget)
+VALUES('Bobs Burgers', 1300000)
+
+SELECT *
+FROM accounts
+
+INSERT INTO accounts (name, budget)
+VALUES('Pizza Planet', 40000000)
+
+SELECT *
+FROM accounts 
+
+id      name            budget
+integer text            integer
+1       'Bobs Burgers'  1300000
+2       'Pizza Planet'  40000000
