@@ -512,6 +512,10 @@ ORDER BY ordercount desc
  
 > Use a LEFT JOIN to join the Orders table onto the Customers table and check for a NULL value in the OrderID column
 
+DELETE 
+FROM Customers 
+WHERE Customers.CustomerID IN (SELECT Orders.CustomerID FROM Orders WHERE Orders.CustomerID == Customers.CustomerID) = 0
+
 ## Create Database and Table
 
 ### Keep track of the code you write and paste at the end of this document
