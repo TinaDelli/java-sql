@@ -270,9 +270,13 @@ Phone
 > This can be done with the INSERT INTO clause
 
 You have made changes to the database. Rows affected: 1
+92	The Shire	Bilbio Baggins	1 Hobbit Hole	Bag End	111	Middle Earth
 
 ### update _Bilbo Baggins_ record so that the postal code changes to _"11122"_.
 > This can be done with UPDATE and WHERE clauses
+
+You have made changes to the database. Rows affected: 1
+92	The Shire	Bilbo Baggins	1 Hobbit Hole	Bag End	11122	Middle Earth
 
 ### list orders grouped by customer showing the number of orders per customer. _Rattlesnake Canyon Grocery_ should have 7 orders.
 > This can be done with SELECT, COUNT, JOIN and GROUP BY clauses. Your count should focus on a field in the Orders table, not the Customer table
