@@ -19,6 +19,12 @@ Answer the following data queries. Keep track of the SQL you write by pasting it
 ### find all customers that live in London. Returns 6 records.
 > This can be done with SELECT and WHERE clauses
 
+```sql 
+SELECT * 
+FROM Customers
+WHERE City = 'London'
+```
+
 4	Around the Horn	Thomas Hardy	120 Hanover Sq.	London	WA1 1DP	UK
 11	B's Beverages	Victoria Ashworth	Fauntleroy Circus	London	EC2 5NT	UK
 16	Consolidated Holdings	Elizabeth Brown	Berkeley Gardens 12 Brewery	London	WX1 6LT	UK
@@ -29,12 +35,24 @@ Answer the following data queries. Keep track of the SQL you write by pasting it
 ### find all customers with postal code 1010. Returns 3 customers.
 > This can be done with SELECT and WHERE clauses
 
+```sql 
+SELECT * 
+FROM Customers
+WHERE PostalCode = '1010'
+```
+
 12	Cactus Comidas para llevar	Patricio Simpson	Cerrito 333	Buenos Aires	1010	Argentina
 54	Océano Atlántico Ltda.	Yvonne Moncada	Ing. Gustavo Moncada 8585 Piso 20-A	Buenos Aires	1010	Argentina
 64	Rancho grande	Sergio Gutiérrez	Av. del Libertador 900	Buenos Aires	1010	Argentina
 
 ### find the phone number for the supplier with the id 11. Should be (010) 9984510.
 > This can be done with SELECT and WHERE clauses
+
+```sql 
+SELECT Phone
+FROM Suppliers
+WHERE SupplierID = '11'
+```
 
 11	Heli Süßwaren GmbH & Co. KG	Petra Winkler	Tiergartenstraße 5	Berlin	10785	Germany	(010) 9984510
 
@@ -43,6 +61,13 @@ Phone
 
 ### list orders descending by the order date. The order with date 1997-02-12 should be at the top.
 > This can be done with SELECT, WHERE, and ORDER BY clauses
+
+
+```sql 
+SELECT * 
+FROM Orders
+ORDER BY OrderDate desc
+```
 
 10443	66	8	1997-02-12	1
 10442	20	3	1997-02-11	2
@@ -244,6 +269,12 @@ Phone
 ### find all suppliers who have names longer than 20 characters. You can use `length(SupplierName)` to get the length of the name. Returns 11 records.
 > This can be done with SELECT and WHERE clauses
 
+```sql 
+SELECT * 
+FROM Suppliers
+WHERE length(SupplierName) > 20
+```
+
 2	New Orleans Cajun Delights	Shelley Burke	P.O. Box 78934	New Orleans	70117	USA	(100) 555-4822
 3	Grandma Kelly's Homestead	Regina Murphy	707 Oxford Rd.	Ann Arbor	48104	USA	(313) 555-5735
 5	Cooperativa de Quesos 'Las Cabras'	Antonio del Valle Saavedra	Calle del Rosal 4	Oviedo	33007	Spain	(98) 598 76 54
@@ -261,6 +292,12 @@ Phone
 
 > Don't forget the wildcard '%' symbols at the beginning and end of your substring to denote it can appear anywhere in the string in question
 
+```sql 
+SELECT * 
+FROM Customers
+WHERE CustomerName LIKE '%market%'
+```
+
 10	Bottom-Dollar Marketse	Elizabeth Lincoln	23 Tsawassen Blvd.	Tsawassen	T2F 8M4	Canada
 32	Great Lakes Food Market	Howard Snyder	2732 Baker Blvd.	Eugene	97403	USA
 71	Save-a-lot Markets	Jose Pavarotti	187 Suffolk Ln.	Boise	83720	USA
@@ -269,11 +306,22 @@ Phone
 ### add a customer record for _"The Shire"_, the contact name is _"Bilbo Baggins"_ the address is _"1 Hobbit-Hole"_ in _"Bag End"_, postal code _"111"_ and the country is _"Middle Earth"_.
 > This can be done with the INSERT INTO clause
 
+```sql
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+SET ('The Shire', 'Bilbio Baggins', '1 Hobbit Hole', 'Bag End', '111', 'Middle Earth')
+```
+
 You have made changes to the database. Rows affected: 1
 92	The Shire	Bilbio Baggins	1 Hobbit Hole	Bag End	111	Middle Earth
 
 ### update _Bilbo Baggins_ record so that the postal code changes to _"11122"_.
 > This can be done with UPDATE and WHERE clauses
+
+```sql
+UPDATE Customers
+VALUES ContactName = 'Bilbo Baggins', PostalCode = '11122'
+WHERE CustomerID = '11'
+```
 
 You have made changes to the database. Rows affected: 1
 92	The Shire	Bilbo Baggins	1 Hobbit Hole	Bag End	11122	Middle Earth
@@ -282,6 +330,91 @@ You have made changes to the database. Rows affected: 1
 > This can be done with SELECT, COUNT, JOIN and GROUP BY clauses. Your count should focus on a field in the Orders table, not the Customer table
 
 > There is more information about the COUNT clause on [W3 Schools](https://www.w3schools.com/sql/sql_count_avg_sum.asp)
+
+```sql
+SELECT o.OrderDate, c.CustomerName, c.ContactName,
+(SELECT COUNT(o.OrderID)
+FROM Orders o
+WHERE o.CustomerID = c.CustomerID) as ordercount
+FROM Customers c JOIN Orders o
+ON o.CustomerID = c.CustomerID
+GROUP BY c.CustomerName
+ORDER BY o.OrderDate
+```
+1996-07-04	Wilman Kala	Matti Karttunen	1
+1996-07-05	Tradição Hipermercados	Anabela Domingues	2
+1996-07-08	Hanari Carnes	Mario Pontes	2
+1996-07-08	Victuailles en stock	Mary Saveley	2
+1996-07-09	Suprêmes délices	Pascale Cartrain	2
+1996-07-11	Chop-suey Chinese	Yang Wang	2
+1996-07-12	Richter Supermarkt	Michael Holz	2
+1996-07-15	Wellington Importadora	Paula Parente	2
+1996-07-16	HILARIÓN-Abastos	Carlos Hernández	2
+1996-07-17	Ernst Handel	Roland Mendel	10
+1996-07-18	Centro comercial Moctezuma	Francisco Chang	1
+1996-07-19	Old World Delicatessen	Rene Phillips	4
+1996-07-19	Que Delícia	Bernardo Batista	4
+1996-07-22	Rattlesnake Canyon Grocery	Paula Wilson	7
+1996-07-24	Folk och fä HB	Maria Larsson	4
+1996-07-25	Blondel père et fils	Frédérique Citeaux	4
+1996-07-26	Wartian Herkku	Pirkko Koskitalo	7
+1996-07-29	Frankenversand	Peter Franken	4
+1996-07-30	GROSELLA-Restaurante	Manuel Pereira	1
+1996-07-31	White Clover Markets	Karl Jablonski	2
+1996-08-01	Split Rail Beer & Ale	Art Braunschweiger	6
+1996-08-05	QUICK-Stop	Horst Kloss	7
+1996-08-06	Vins et alcools Chevalier	Paul Henriot	2
+1996-08-07	Magazzini Alimentari Riuniti	Giovanni Rovelli	3
+1996-08-08	Tortuga Restaurante	Miguel Angel Paolino	4
+1996-08-09	Morgenstern Gesundkost	Alexander Feuer	1
+1996-08-12	Berglunds snabbköp	Christina Berglund	3
+1996-08-13	Lehmanns Marktstand	Renate Messner	3
+1996-08-14	Romero y tomillo	Alejandra Camino	3
+1996-08-16	LILA-Supermercado	Carlos González	5
+1996-08-22	Ricardo Adocicados	Janete Limeira	2
+1996-08-23	Reggiani Caseifici	Maurizio Moroni	3
+1996-08-26	B's Beverages	Victoria Ashworth	1
+1996-08-27	Comércio Mineiro	Pedro Afonso	1
+1996-09-05	Hungry Owl All-Night Grocers	Patricia McKenna	6
+1996-09-09	Die Wandernde Kuh	Rita Müller	4
+1996-09-11	Godos Cocina Típica	José Pedro Freyre	1
+1996-09-17	Lonesome Pine Restaurant	Fran Wilson	2
+1996-09-18	Ana Trujillo Emparedados y helados	Ana Trujillo	1
+1996-09-20	Du monde entier	Janine Labrune	1
+1996-09-20	The Big Cheese	Liz Nixon	1
+1996-09-26	Island Trading	Helen Bennett	3
+1996-10-04	Pericles Comidas clásicas	Guillermo Fernández	2
+1996-10-07	Königlich Essen	Philip Cramer	2
+1996-10-08	Save-a-lot Markets	Jose Pavarotti	4
+1996-10-10	Bólido Comidas preparadas	Martín Sommer	1
+1996-10-14	Furia Bacalhau e Frutos do Mar	Lino Rodriguez	2
+1996-10-16	Bon app'	Laurence Lebihans	3
+1996-10-17	Mère Paillarde	Jean Fresnière	5
+1996-10-23	Princesa Isabel Vinhoss	Isabel de Castro	3
+1996-10-29	Simons bistro	Jytte Petersen	2
+1996-11-06	Familia Arquibaldo	Aria Cruz	3
+1996-11-11	La maison d'Asie	Annette Roulet	5
+1996-11-13	Piccolo und mehr	Georg Pipps	3
+1996-11-15	Around the Horn	Thomas Hardy	2
+1996-11-21	Seven Seas Imports	Hari Kumar	3
+1996-11-26	Drachenblut Delikatessend	Sven Ottlieb	2
+1996-11-26	Eastern Connection	Ann Devon	2
+1996-11-27	Antonio Moreno Taquería	Antonio Moreno	1
+1996-11-28	Galería del gastrónomo	Eduardo Saavedra	2
+1996-11-28	Vaffeljernet	Palle Ibsen	2
+1996-12-04	Queen Cozinha	Lúcia Carvalho	2
+1996-12-05	Wolski	Zbyszek	1
+1996-12-06	Hungry Coyote Import Store	Yoshi Latimer	3
+1996-12-18	Santé Gourmet	Jonas Bergulfsen	1
+1996-12-20	Bottom-Dollar Marketse	Elizabeth Lincoln	4
+1997-01-06	LINO-Delicateses	Felipe Izquierdo	1
+1997-01-07	Ottilies Käseladen	Henriette Pfalzheim	1
+1997-01-08	Folies gourmandes	Martine Rancé	1
+1997-01-09	Océano Atlántico Ltda.	Yvonne Moncada	1
+1997-01-22	Franchi S.p.A.	Paolo Accorti	1
+1997-01-23	Gourmet Lanchonetes	André Fonseca	1
+1997-02-04	Consolidated Holdings	Elizabeth Brown	1
+1997-02-06	Toms Spezialitäten	Karin Josephs	1
 
 ### list customers names and the number of orders per customer. Sort the list by number of orders in descending order. _Ernst Handel_ should be at the top with 10 orders followed by _QUICK-Stop_, _Rattlesnake Canyon Grocery_ and _Wartian Herkku_ with 7 orders each.
 > This can be done by adding an ORDER BY clause to the previous answer
