@@ -418,6 +418,7 @@ ORDER BY o.OrderDate
 
 ### list customers names and the number of orders per customer. Sort the list by number of orders in descending order. _Ernst Handel_ should be at the top with 10 orders followed by _QUICK-Stop_, _Rattlesnake Canyon Grocery_ and _Wartian Herkku_ with 7 orders each.
 > This can be done by adding an ORDER BY clause to the previous answer
+
 ```sql 
 SELECT o.OrderDate, c.CustomerName, c.ContactName,
 (SELECT COUNT(o.OrderID)
@@ -431,6 +432,76 @@ ORDER BY ordercount desc
 
 ### list orders grouped by customer's city showing number of orders per city. Returns 58 Records with _Aachen_ showing 2 orders and _Albuquerque_ showing 7 orders.
 > This is very similar to the previous two queries, however, it focuses on the City rather than the CustomerName
+
+```sql
+SELECT o.OrderDate, c.City,
+(SELECT COUNT(o.OrderID)
+FROM Orders o
+WHERE o.CustomerID = c.CustomerID) as ordercount
+FROM Customers c JOIN Orders o
+ON o.CustomerID = c.CustomerID
+GROUP BY c.City
+ORDER BY ordercount desc
+```
+
+1996-07-17	Graz	10
+1996-07-22	Albuquerque	7
+1996-08-05	Cunewalde	7
+1996-07-26	Oulu	7
+1996-09-05	Cork	6
+1996-08-01	Lander	6
+1996-08-16	Barquisimeto	5
+1996-10-17	Montréal	5
+1996-11-11	Toulouse	5
+1996-07-19	Anchorage	4
+1996-10-08	Boise	4
+1996-07-24	Bräcke	4
+1996-07-29	München	4
+1996-07-25	Strasbourg	4
+1996-09-09	Stuttgart	4
+1996-12-20	Tsawassen	4
+1996-08-07	Bergamo	3
+1996-09-26	Cowes	3
+1996-12-06	Elgin	3
+1996-08-13	Frankfurt a.M.	3
+1996-08-12	Luleå	3
+1996-08-14	Madrid	3
+1996-10-16	Marseille	3
+1996-08-23	Reggio Emilia	3
+1996-11-13	Salzburg	3
+1996-11-26	Aachen	2
+1996-11-28	Barcelona	2
+1996-07-11	Bern	2
+1996-10-07	Brandenburg	2
+1996-07-09	Charleroi	2
+1996-07-12	Genève	2
+1996-10-29	København	2
+1996-10-14	Lisboa	2
+1996-07-08	Lyon	2
+1996-09-17	Portland	2
+1996-08-06	Reims	2
+1996-07-15	Resende	2
+1996-07-08	Rio de Janeiro	2
+1996-07-16	San Cristóbal	2
+1996-07-31	Seattle	2
+1996-07-05	São Paulo	2
+1996-11-28	Århus	2
+1997-01-09	Buenos Aires	1
+1997-01-23	Campinas	1
+1996-07-30	Caracas	1
+1996-07-04	Helsinki	1
+1997-01-06	I. de Margarita	1
+1997-01-07	Köln	1
+1996-08-09	Leipzig	1
+1997-01-08	Lille	1
+1996-08-26	London	1
+1996-07-18	México D.F.	1
+1997-02-06	Münster	1
+1996-09-20	Nantes	1
+1996-09-11	Sevilla	1
+1996-12-18	Stavern	1
+1997-01-22	Torino	1
+1996-12-05	Walla	1
 
 ## Stretch Goals
 
